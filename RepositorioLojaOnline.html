@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja Mano Allan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .logo-container {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .whatsapp-btn {
+            transition: all 0.3s ease;
+        }
+        .whatsapp-btn:hover {
+            background-color: #25D366;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header com Logo -->
+    <header class="logo-container shadow-md">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <!-- Substitua pelo seu logo -->
+                    <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-lg mr-4">
+                        <i class="fas fa-store text-3xl text-blue-600"></i>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-800">Loja Mano Allan</h1>
+                </div>
+                <div class="flex items-center">
+                    <div class="hidden md:flex items-center mr-6">
+                        <i class="fas fa-phone-alt text-blue-600 mr-2"></i>
+                        <span class="text-gray-700">(19) 99283-6369</span>
+                    </div>
+                    <a href="#products" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
+                        Ver Produtos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner Destaque -->
+    <section class="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-12">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-4">Produtos de Qualidade</h2>
+            <p class="text-xl mb-6">Encontre os melhores itens para você</p>
+            <a href="#products" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold inline-block hover:bg-gray-100 transition">
+                Compre Agora <i class="fas fa-arrow-down ml-2"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Seção de Produtos -->
+    <section id="products" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Nossos Produtos</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Produto 1 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 transition duration-300">
+                    <div class="h-48 bg-gray-100 flex items-center justify-center">
+                        <i class="fas fa-box-open text-6xl text-gray-400"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Produto 1</h3>
+                        <p class="text-gray-600 mb-4">Descrição breve do produto e suas principais características.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold text-blue-600">R$ 99,90</span>
+                            <a href="https://wa.me/55SEUNUMERO?text=Olá! Estou interessado no Produto 1" 
+                               class="whatsapp-btn bg-green-500 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i class="fab fa-whatsapp mr-2"></i> Comprar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produto 2 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 transition duration-300">
+                    <div class="h-48 bg-gray-100 flex items-center justify-center">
+                        <i class="fas fa-tshirt text-6xl text-gray-400"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Produto 2</h3>
+                        <p class="text-gray-600 mb-4">Descrição breve do produto e suas principais características.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold text-blue-600">R$ 129,90</span>
+                            <a href="https://wa.me/55SEUNUMERO?text=Olá! Estou interessado no Produto 2" 
+                               class="whatsapp-btn bg-green-500 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i class="fab fa-whatsapp mr-2"></i> Comprar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produto 3 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 transition duration-300">
+                    <div class="h-48 bg-gray-100 flex items-center justify-center">
+                        <i class="fas fa-headphones text-6xl text-gray-400"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Produto 3</h3>
+                        <p class="text-gray-600 mb-4">Descrição breve do produto e suas principais características.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold text-blue-600">R$ 199,90</span>
+                            <a href="https://wa.me/55SEUNUMERO?text=Olá! Estou interessado no Produto 3" 
+                               class="whatsapp-btn bg-green-500 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i class="fab fa-whatsapp mr-2"></i> Comprar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produto 4 -->
+                <div class="product-card bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 transition duration-300">
+                    <div class="h-48 bg-gray-100 flex items-center justify-center">
+                        <i class="fas fa-shoe-prints text-6xl text-gray-400"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Produto 4</h3>
+                        <p class="text-gray-600 mb-4">Descrição breve do produto e suas principais características.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold text-blue-600">R$ 159,90</span>
+                            <a href="https://wa.me/55SEUNUMERO?text=Olá! Estou interessado no Produto 4" 
+                               class="whatsapp-btn bg-green-500 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i class="fab fa-whatsapp mr-2"></i> Comprar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Loja mano Allan</h3>
+                    <p class="text-gray-400">Oferecendo os melhores produtos com qualidade e garantia para nossos clientes.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contato</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-2 text-blue-400"></i>
+                            (19) 99283-6369
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2 text-blue-400"></i>
+                            contato@sualoja.com
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-whatsapp mr-2 text-blue-400"></i>
+                            (19) 99283-6369
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Redes Sociais</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center hover:bg-blue-600 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center hover:bg-pink-600 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center hover:bg-blue-400 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Loja mano Allan. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botão Flutuante do WhatsApp -->
+    <a href="https://wa.me/55SEUNUMERO" 
+       class="fixed bottom-6 right-6 bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-xl hover:bg-green-600 transition z-50">
+        <i class="fab fa-whatsapp text-3xl"></i>
+    </a>
+
+    <script>
+        // Você pode adicionar interações JavaScript aqui se necessário
+        document.addEventListener('DOMContentLoaded', function() {
+            // Exemplo: Adicionar animação ao rolar para a seção de produtos
+            const productCards = document.querySelectorAll('.product-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, 100 * index);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            productCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
