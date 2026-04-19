@@ -654,9 +654,8 @@
   </div><!-- /app -->
 
   <script>
-  // ============================================================
-  // CATÁLOGO DE TIPOS DE SITE
-  // ============================================================
+  
+// CATÁLOGO DE TIPOS DE SITE
   const catalog = {
     institucional: {
       name: 'Institucional',
@@ -821,9 +820,7 @@
     },
   };
 
-  // ============================================================
   // ESTADO
-  // ============================================================
   let state = {
     tipo: 'institucional',
     paginas: 0,
@@ -832,9 +829,7 @@
     extras: new Set()
   };
 
-  // ============================================================
   // RENDER TIPO GRID
-  // ============================================================
   function renderTypeGrid() {
     const grid = document.getElementById('typeGrid');
     grid.innerHTML = '';
@@ -859,9 +854,7 @@
     });
   }
 
-  // ============================================================
   // RENDER EXTRAS
-  // ============================================================
   function renderExtras() {
     const cat = catalog[state.tipo];
     const grid = document.getElementById('extrasGrid');
@@ -911,9 +904,7 @@
     });
   }
 
-  // ============================================================
   // CALCULAR + RENDER SIDEBAR
-  // ============================================================
   function calcular() {
     const cat = catalog[state.tipo];
     const paginas = parseInt(document.getElementById('paginasInput').value) || 0;
@@ -984,9 +975,7 @@
     buildCTA(cat, total, totalDias, extrasRows);
   }
 
-  // ============================================================
   // TIMELINE
-  // ============================================================
   function renderTimeline(cat, diasBase, extrasRows, diasExtras, totalDias) {
     const el = document.getElementById('timelineEl');
 
@@ -1013,46 +1002,46 @@
     // Fases base por tipo
     const baseFases = {
       'Institucional':        [
-        { nome: '📋 Briefing & planejamento', dias: 1 },
-        { nome: '🎨 Design (wireframe + visual)', dias: Math.ceil(diasBase * 0.35) },
-        { nome: '💻 Desenvolvimento', dias: Math.ceil(diasBase * 0.4) },
-        { nome: '📝 Inserção de conteúdo', dias: Math.ceil(diasBase * 0.1) },
-        { nome: '✅ Revisão & testes', dias: Math.ceil(diasBase * 0.1) },
+        { nome: 'Briefing & planejamento', dias: 1 },
+        { nome: 'Design (wireframe + visual)', dias: Math.ceil(diasBase * 0.35) },
+        { nome: 'Desenvolvimento', dias: Math.ceil(diasBase * 0.4) },
+        { nome: 'Inserção de conteúdo', dias: Math.ceil(diasBase * 0.1) },
+        { nome: 'Revisão & testes', dias: Math.ceil(diasBase * 0.1) },
       ],
       'Landing Page':         [
-        { nome: '📋 Briefing & estratégia', dias: 1 },
-        { nome: '🎨 Design da página', dias: Math.ceil(diasBase * 0.4) },
-        { nome: '💻 Desenvolvimento', dias: Math.ceil(diasBase * 0.35) },
-        { nome: '⚡ Otimização de conversão', dias: Math.ceil(diasBase * 0.15) },
-        { nome: '✅ Revisão & publicação', dias: 1 },
+        { nome: 'Briefing & estratégia', dias: 1 },
+        { nome: 'Design da página', dias: Math.ceil(diasBase * 0.4) },
+        { nome: 'Desenvolvimento', dias: Math.ceil(diasBase * 0.35) },
+        { nome: 'Otimização de conversão', dias: Math.ceil(diasBase * 0.15) },
+        { nome: 'Revisão & publicação', dias: 1 },
       ],
       'Loja Virtual':         [
-        { nome: '📋 Briefing & planejamento', dias: 1 },
-        { nome: '🎨 Design da loja', dias: Math.ceil(diasBase * 0.2) },
-        { nome: '💻 Desenvolvimento base', dias: Math.ceil(diasBase * 0.3) },
-        { nome: '🛒 Catálogo & pagamentos', dias: Math.ceil(diasBase * 0.25) },
-        { nome: '🔧 Integrações & testes', dias: Math.ceil(diasBase * 0.15) },
-        { nome: '✅ Revisão & publicação', dias: 1 },
+        { nome: 'Briefing & planejamento', dias: 1 },
+        { nome: 'Design da loja', dias: Math.ceil(diasBase * 0.2) },
+        { nome: 'Desenvolvimento base', dias: Math.ceil(diasBase * 0.3) },
+        { nome: 'Catálogo & pagamentos', dias: Math.ceil(diasBase * 0.25) },
+        { nome: 'Integrações & testes', dias: Math.ceil(diasBase * 0.15) },
+        { nome: 'Revisão & publicação', dias: 1 },
       ],
       'Site de Casamento':    [
-        { nome: '💑 Briefing do casal', dias: 1 },
-        { nome: '🎨 Design temático', dias: Math.ceil(diasBase * 0.4) },
-        { nome: '💻 Desenvolvimento', dias: Math.ceil(diasBase * 0.3) },
-        { nome: '📸 Inserção de fotos & dados', dias: Math.ceil(diasBase * 0.15) },
-        { nome: '✅ Revisão & envio ao casal', dias: 1 },
+        { nome: 'Briefing do casal', dias: 1 },
+        { nome: 'Dsign temático', dias: Math.ceil(diasBase * 0.4) },
+        { nome: 'Desenvolvimento', dias: Math.ceil(diasBase * 0.3) },
+        { nome: 'Inserção de fotos & dados', dias: Math.ceil(diasBase * 0.15) },
+        { nome: 'Revisão & envio ao casal', dias: 1 },
       ],
       'Portfólio':            [
-        { nome: '📋 Briefing & conteúdo', dias: 1 },
-        { nome: '🎨 Design visual', dias: Math.ceil(diasBase * 0.35) },
-        { nome: '💻 Desenvolvimento', dias: Math.ceil(diasBase * 0.4) },
-        { nome: '✅ Revisão & publicação', dias: Math.ceil(diasBase * 0.2) },
+        { nome: 'Briefing & conteúdo', dias: 1 },
+        { nome: 'Design visual', dias: Math.ceil(diasBase * 0.35) },
+        { nome: 'Desenvolvimento', dias: Math.ceil(diasBase * 0.4) },
+        { nome: 'Revisão & publicação', dias: Math.ceil(diasBase * 0.2) },
       ],
       'Clínica/Saúde':        [
-        { nome: '📋 Briefing & planejamento', dias: 1 },
-        { nome: '🎨 Design profissional', dias: Math.ceil(diasBase * 0.3) },
-        { nome: '💻 Desenvolvimento', dias: Math.ceil(diasBase * 0.35) },
-        { nome: '🩺 Conteúdo & especialidades', dias: Math.ceil(diasBase * 0.2) },
-        { nome: '✅ Revisão & publicação', dias: Math.ceil(diasBase * 0.1) },
+        { nome: 'Briefing & planejamento', dias: 1 },
+        { nome: 'Design profissional', dias: Math.ceil(diasBase * 0.3) },
+        { nome: 'Desenvolvimento', dias: Math.ceil(diasBase * 0.35) },
+        { nome: 'Conteúdo & especialidades', dias: Math.ceil(diasBase * 0.2) },
+        { nome: 'Revisão & publicação', dias: Math.ceil(diasBase * 0.1) },
       ],
     };
 
@@ -1067,9 +1056,7 @@
     return fases;
   }
 
-  // ============================================================
   // CTA WHATSAPP
-  // ============================================================
   function buildCTA(cat, total, dias, extrasRows) {
     const btn = document.getElementById('ctaBtn');
     const extrasTexto = extrasRows.length > 0
@@ -1081,16 +1068,12 @@
     };
   }
 
-  // ============================================================
   // EVENT LISTENERS
-  // ============================================================
   document.getElementById('paginasInput').addEventListener('input', calcular);
   document.getElementById('designLevel').addEventListener('change', calcular);
   document.getElementById('prazoSelect').addEventListener('change', calcular);
 
-  // ============================================================
   // INIT
-  // ============================================================
   renderTypeGrid();
   renderExtras();
   renderIncluded();
