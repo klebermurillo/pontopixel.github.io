@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImobiCRM - Gestão Imobiliária</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .sidebar.collapsed {
+            width: 70px;
+        }
+        .sidebar.collapsed .sidebar-text {
+            display: none;
+        }
+        .sidebar.collapsed .logo-text {
+            display: none;
+        }
+        .sidebar.collapsed .logo-icon {
+            display: block;
+        }
+        .logo-icon {
+            display: none;
+        }
+        .content {
+            transition: all 0.3s ease;
+        }
+        .content.expanded {
+            margin-left: 70px;
+        }
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .chart-container {
+            height: 300px;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                z-index: 1000;
+                height: 100vh;
+                left: -250px;
+            }
+            .sidebar.open {
+                left: 0;
+            }
+            .content {
+                margin-left: 0 !important;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="sidebar bg-blue-800 text-white w-64 flex-shrink-0 flex flex-col">
+            <div class="p-4 flex items-center">
+                <div class="logo-icon">
+                    <i class="fas fa-home text-2xl"></i>
+                </div>
+                <div class="logo-text">
+                    <h1 class="text-xl font-bold">Imobi<span class="text-yellow-300">CRM</span></h1>
+                    <p class="text-xs text-blue-200">Gestão Imobiliária</p>
+                </div>
+            </div>
+            <button id="toggleSidebar" class="md:hidden absolute top-4 right-4 text-white">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <nav class="flex-1 overflow-y-auto">
+                <div class="p-4">
+                    <div class="mb-6">
+                        <h3 class="text-xs uppercase text-blue-300 mb-2 sidebar-text">Menu Principal</h3>
+                        <ul>
+                            <li class="mb-1">
+                                <a href="#" class="flex items-center p-2 rounded hover:bg-blue-700 active-nav">
+                                    <i class="fas fa-tachometer-alt mr-3"></i>
+                                    <span class="sidebar-text">Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="mb-1">
+                                <a href="#" class="flex items-center p-2 rounded hover:bg-blue-700">
+                                    <i class="fas fa-users mr-3"></i>
+                                    <span class="sidebar-text">Clientes</span>
+                                </a>
+                            </li>
+                            <li class="mb-1">
+                                <a href="#" class="flex items-center p-2 rounded hover:bg-blue-700">
+                                    <i class="fas fa-home mr-3"></i>
+                                    <span class="sidebar-text">Imóveis</span>
+                                </a>
+                            </li>
+                            <li class="mb-1">
+                                <a href="#" class="flex items-center p-2 rounded hover:bg-blue-700">
+                                    <i class="fas fa-calendar-alt mr-3"></i>
+                                    <span class="sidebar-text">Visitas</span>
+                                </a>
+                            </li>
+                            <li class="mb-1">
+                                <a href="#" class="flex items-center p-2 rounded hover:bg-blue-700">
+                                    <i class="fas fa-file-contract mr-3"></i>
+                                    <span class="sidebar-text">Contratos</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-6">
+                        <h3 class="text-xs uppercase text-blue-300 mb-2 sidebar-text">Relatórios</h3>
+                        <ul>
+                            <li class="mb-1">
+                                <a href="#" class="flex items-center p-2 rounded hover:bg-blue-700">
+                                    <i class="fas fa-chart-line mr-3"></i>
+                                    <span class="sidebar-text">Vendas</span>
+                                </a>
+                            </li>
+                            <li class="mb-1">
+                                <a href="#" class="flex items-center p-2 rounded hover:bg-blue-700">
+                                    <i class="fas fa-chart-pie mr-3"></i>
+                                    <span class="sidebar-text">Performance</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xs uppercase text-blue-300 mb-2 sidebar-text">Configurações</h3>
+                        <ul>
+                            <li class="mb-1">
+                                <a href="#" class="flex items-center p-2 rounded hover:bg-blue-700">
+                                    <i class="fas fa-cog mr-3"></i>
+                                    <span class="sidebar-text">Sistema</span>
+                                </a>
+                            </li>
+                            <li class="mb-1">
+                                <a href="#" class="flex items-center p-2 rounded hover:bg-blue-700">
+                                    <i class="fas fa-user-cog mr-3"></i>
+                                    <span class="sidebar-text">Perfil</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="p-4 border-t border-blue-700">
+                <div class="flex items-center">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-10 h-10 rounded-full">
+                    <div class="ml-3 sidebar-text">
+                        <p class="text-sm font-medium">João Corretor</p>
+                        <p class="text-xs text-blue-200">admin@imobicrm.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content flex-1 overflow-y-auto">
+            <!-- Mobile Menu Button -->
+            <button id="mobileMenuBtn" class="mobile-menu-btn fixed top-4 left-4 z-50 bg-blue-800 text-white p-2 rounded md:hidden">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Top Navigation -->
+            <header class="bg-white shadow-sm">
+                <div class="px-4 py-3 flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800">Dashboard</h2>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" placeholder="Pesquisar..." class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="relative">
+                            <button class="text-gray-600 hover:text-gray-900">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="p-4">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
+                                <i class="fas fa-users text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Clientes Ativos</p>
+                                <h3 class="text-2xl font-bold">124</h3>
+                                <p class="text-green-500 text-xs flex items-center">
+                                    <i class="fas fa-arrow-up mr-1"></i> 12% este mês
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
+                                <i class="fas fa-home text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Imóveis Ativos</p>
+                                <h3 class="text-2xl font-bold">56</h3>
+                                <p class="text-green-500 text-xs flex items-center">
+                                    <i class="fas fa-arrow-up mr-1"></i> 5% este mês
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-yellow-100 text-yellow-600 mr-4">
+                                <i class="fas fa-handshake text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Negócios Fechados</p>
+                                <h3 class="text-2xl font-bold">8</h3>
+                                <p class="text-red-500 text-xs flex items-center">
+                                    <i class="fas fa-arrow-down mr-1"></i> 2% este mês
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-purple-100 text-purple-600 mr-4">
+                                <i class="fas fa-dollar-sign text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Faturamento</p>
+                                <h3 class="text-2xl font-bold">R$ 245,000</h3>
+                                <p class="text-green-500 text-xs flex items-center">
+                                    <i class="fas fa-arrow-up mr-1"></i> 18% este mês
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts and Recent Activities -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <!-- Performance Chart -->
+                    <div class="bg-white rounded-lg shadow p-6 lg:col-span-2">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold text-gray-800">Performance Mensal</h3>
+                            <div>
+                                <select class="border rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option>Últimos 6 meses</option>
+                                    <option>Este ano</option>
+                                    <option>Ano passado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activities -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="font-semibold text-gray-800 mb-4">Atividades Recentes</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="p-2 rounded-full bg-blue-100 text-blue-600 mr-3">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Novo imóvel cadastrado</p>
+                                    <p class="text-xs text-gray-500">Apartamento em Copacabana</p>
+                                    <p class="text-xs text-gray-400">2 horas atrás</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="p-2 rounded-full bg-green-100 text-green-600 mr-3">
+                                    <i class="fas fa-handshake"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Negócio fechado</p>
+                                    <p class="text-xs text-gray-500">Casa em Barra da Tijuca</p>
+                                    <p class="text-xs text-gray-400">Ontem, 15:30</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="p-2 rounded-full bg-yellow-100 text-yellow-600 mr-3">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Visita agendada</p>
+                                    <p class="text-xs text-gray-500">Cliente: Maria Silva</p>
+                                    <p class="text-xs text-gray-400">Ontem, 10:15</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="p-2 rounded-full bg-purple-100 text-purple-600 mr-3">
+                                    <i class="fas fa-file-contract"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Contrato assinado</p>
+                                    <p class="text-xs text-gray-500">Aluguel comercial</p>
+                                    <p class="text-xs text-gray-400">15/06/2023</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="mt-4 text-blue-600 text-sm font-medium hover:text-blue-800">
+                            Ver todas as atividades <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Properties and Clients -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Featured Properties -->
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="p-6 border-b">
+                            <h3 class="font-semibold text-gray-800">Imóveis em Destaque</h3>
+                        </div>
+                        <div class="divide-y">
+                            <div class="property-card p-4 hover:bg-gray-50 transition duration-200 cursor-pointer">
+                                <div class="flex">
+                                    <div class="w-24 h-24 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
+                                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Property" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <h4 class="font-medium">Apartamento - Copacabana</h4>
+                                        <p class="text-sm text-gray-600">2 quartos, 70m²</p>
+                                        <div class="flex items-center mt-2">
+                                            <span class="text-yellow-400">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                            </span>
+                                            <span class="text-xs text-gray-500 ml-1">(12)</span>
+                                        </div>
+                                        <p class="text-lg font-bold text-blue-600 mt-1">R$ 850.000</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="property-card p-4 hover:bg-gray-50 transition duration-200 cursor-pointer">
+                                <div class="flex">
+                                    <div class="w-24 h-24 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
+                                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Property" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <h4 class="font-medium">Casa - Barra da Tijuca</h4>
+                                        <p class="text-sm text-gray-600">4 quartos, 220m²</p>
+                                        <div class="flex items-center mt-2">
+                                            <span class="text-yellow-400">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            </span>
+                                            <span class="text-xs text-gray-500 ml-1">(8)</span>
+                                        </div>
+                                        <p class="text-lg font-bold text-blue-600 mt-1">R$ 1.250.000</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="property-card p-4 hover:bg-gray-50 transition duration-200 cursor-pointer">
+                                <div class="flex">
+                                    <div class="w-24 h-24 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
+                                        <img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Property" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <h4 class="font-medium">Sala Comercial - Centro</h4>
+                                        <p class="text-sm text-gray-600">120m²</p>
+                                        <div class="flex items-center mt-2">
+                                            <span class="text-yellow-400">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </span>
+                                            <span class="text-xs text-gray-500 ml-1">(15)</span>
+                                        </div>
+                                        <p class="text-lg font-bold text-blue-600 mt-1">R$ 2.300/mês</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 text-center">
+                            <button class="text-blue-600 font-medium hover:text-blue-800">
+                                Ver todos os imóveis <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Clients -->
+                    <div class="bg-white rounded-lg shadow">
+                        <div class="p-6 border-b">
+                            <h3 class="font-semibold text-gray-800">Clientes Recentes</h3>
+                        </div>
+                        <div class="divide-y">
+                            <div class="p-4 hover:bg-gray-50 transition duration-200 cursor-pointer">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden flex-shrink-0">
+                                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <h4 class="font-medium">Ana Carolina</h4>
+                                        <p class="text-sm text-gray-600">Interesse: Apartamento 3 quartos</p>
+                                        <div class="flex items-center mt-1">
+                                            <span class="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded">Ativo</span>
+                                            <span class="text-xs text-gray-500 ml-2">Cadastrado em: 12/06/2023</span>
+                                        </div>
+                                    </div>
+                                    <button class="text-blue-600 hover:text-blue-800">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-4 hover:bg-gray-50 transition duration-200 cursor-pointer">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden flex-shrink-0">
+                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <h4 class="font-medium">Carlos Eduardo</h4>
+                                        <p class="text-sm text-gray-600">Interesse: Casa na praia</p>
+                                        <div class="flex items-center mt-1">
+                                            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-0.5 rounded">Em negociação</span>
+                                            <span class="text-xs text-gray-500 ml-2">Cadastrado em: 05/06/2023</span>
+                                        </div>
+                                    </div>
+                                    <button class="text-blue-600 hover:text-blue-800">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-4 hover:bg-gray-50 transition duration-200 cursor-pointer">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden flex-shrink-0">
+                                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Client" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <h4 class="font-medium">Juliana Martins</h4>
+                                        <p class="text-sm text-gray-600">Interesse: Sala comercial</p>
+                                        <div class="flex items-center mt-1">
+                                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded">Contato inicial</span>
+                                            <span class="text-xs text-gray-500 ml-2">Cadastrado em: 01/06/2023</span>
+                                        </div>
+                                    </div>
+                                    <button class="text-blue-600 hover:text-blue-800">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-4 hover:bg-gray-50 transition duration-200 cursor-pointer">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden flex-shrink-0">
+                                        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Client" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <h4 class="font-medium">Roberto Almeida</h4>
+                                        <p class="text-sm text-gray-600">Interesse: Terreno residencial</p>
+                                        <div class="flex items-center mt-1">
+                                            <span class="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded">Ativo</span>
+                                            <span class="text-xs text-gray-500 ml-2">Cadastrado em: 28/05/2023</span>
+                                        </div>
+                                    </div>
+                                    <button class="text-blue-600 hover:text-blue-800">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 text-center">
+                            <button class="text-blue-600 font-medium hover:text-blue-800">
+                                Ver todos os clientes <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Visits -->
+                <div class="mt-6 bg-white rounded-lg shadow">
+                    <div class="p-6 border-b">
+                        <h3 class="font-semibold text-gray-800">Visitas Agendadas</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data/Hora</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Imóvel</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">15/06/2023</div>
+                                        <div class="text-sm text-gray-500">14:00 - 15:00</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10">
+                                                <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/44.jpg" alt="">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Ana Carolina</div>
+                                                <div class="text-sm text-gray-500">(21) 98765-4321</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Apartamento - Copacabana</div>
+                                        <div class="text-sm text-gray-500">Ref: APT-2023-056</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Confirmada</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-phone"></i></button>
+                                        <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-map-marker-alt"></i></button>
+                                        <button class="text-blue-600 hover:text-blue-900"><i class="fas fa-edit"></i></button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">16/06/2023</div>
+                                        <div class="text-sm text-gray-500">10:00 - 11:00</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10">
+                                                <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Carlos Eduardo</div>
+                                                <div class="text-sm text-gray-500">(21) 99876-5432</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Casa - Barra da Tijuca</div>
+                                        <div class="text-sm text-gray-500">Ref: CASA-2023-012</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pendente</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-phone"></i></button>
+                                        <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-map-marker-alt"></i></button>
+                                        <button class="text-blue-600 hover:text-blue-900"><i class="fas fa-edit"></i></button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">17/06/2023</div>
+                                        <div class="text-sm text-gray-500">16:00 - 17:00</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10">
+                                                <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/68.jpg" alt="">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Juliana Martins</div>
+                                                <div class="text-sm text-gray-500">(21) 98765-1234</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Sala Comercial - Centro</div>
+                                        <div class="text-sm text-gray-500">Ref: COM-2023-034</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Agendada</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-phone"></i></button>
+                                        <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-map-marker-alt"></i></button>
+                                        <button class="text-blue-600 hover:text-blue-900"><i class="fas fa-edit"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="p-4 text-center">
+                        <button class="text-blue-600 font-medium hover:text-blue-800">
+                            Ver todas as visitas <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Initialize sidebar toggle functionality
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.querySelector('.sidebar');
+        const content = document.querySelector('.content');
+
+        // Toggle sidebar on desktop
+        toggleSidebar.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            content.classList.toggle('expanded');
+        });
+
+        // Toggle sidebar on mobile
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Initialize performance chart
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        const performanceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                datasets: [{
+                    label: 'Vendas',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 2,
+                    tension: 0.4
+                }, {
+                    label: 'Aluguéis',
+                    data: [8, 15, 5, 9, 4, 7],
+                    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                    borderColor: 'rgba(16, 185, 129, 1)',
+                    borderWidth: 2,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
