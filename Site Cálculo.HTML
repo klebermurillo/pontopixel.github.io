@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simulador de Orçamento – Pontopixel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Verdana:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --blue-deep: #0f2b6e;
+      --blue-mid:  #1a47b8;
+      --blue-bright: #2563eb;
+      --blue-light: #dbeafe;
+      --accent: #f97316;
+      --accent-light: #fff7ed;
+      --green: #16a34a;
+      --green-light: #dcfce7;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --surface: #f8fafc;
+      --white: #ffffff;
+      --radius: 14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--surface);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: var(--blue-deep);
+      padding: 18px 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      text-decoration: none;
+    }
+    .logo i { color: var(--accent); font-size: 1.3rem; }
+    .logo span { font-family: 'Verdana', sans-serif; font-size: 1.3rem; font-weight: 800; }
+
+    .header-tag {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.8);
+      font-size: 0.78rem;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    /* ===== HERO BAR ===== */
+    .hero-bar {
+      background: linear-gradient(135deg, var(--blue-mid) 0%, var(--blue-bright) 100%);
+      color: white;
+      padding: 36px 2rem 28px;
+      text-align: center;
+    }
+    .hero-bar h1 {
+      font-family: 'Verdana', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .hero-bar h1 em { font-style: normal; color: var(--accent); }
+    .hero-bar p {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.95rem;
+    }
+
+    /* ===== LAYOUT ===== */
+    .app {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+    }
+
+    .card-header {
+      background: var(--surface);
+      border-bottom: 1.5px solid var(--border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-header i { color: var(--blue-bright); font-size: 1rem; }
+    .card-header h2 {
+      font-family: 'Verdana', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .card-body { padding: 1.5rem; }
+
+    /* ===== FORM FIELDS ===== */
+    .field { margin-bottom: 1.25rem; }
+    .field label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    select, input[type="number"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+      background: white;
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+
+    input[type="number"] {
+      background-image: none;
+      padding-right: 14px;
+    }
+
+    select:focus, input[type="number"]:focus { border-color: var(--blue-bright); }
+
+    /* ===== TYPE CARDS ===== */
+    .type-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .type-card {
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      position: relative;
+    }
+
+    .type-card:hover { border-color: var(--blue-bright); background: var(--blue-light); }
+
+    .type-card.active {
+      border-color: var(--blue-bright);
+      background: var(--blue-light);
+    }
+
+    .type-card.active::after {
+      content: '✓';
+      position: absolute;
+      top: 6px; right: 8px;
+      font-size: 0.7rem;
+      color: var(--blue-bright);
+      font-weight: 700;
+    }
+
+    .type-card i { font-size: 1.4rem; color: var(--blue-bright); margin-bottom: 6px; display: block; }
+    .type-card .tc-name { font-family: 'Verdana', sans-serif; font-size: 0.85rem; font-weight: 700; }
+    .type-card .tc-price { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* ===== EXTRAS SECTION ===== */
+    .extras-section { margin-top: 1rem; }
+
+    .extras-title {
+      font-family: 'Verdana', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text-dark);
+    }
+
+    .extras-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+
+    .extra-item {
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: all 0.18s;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      position: relative;
+    }
+
+    .extra-item:hover { border-color: var(--blue-bright); }
+
+    .extra-item.active {
+      border-color: var(--blue-bright);
+      background: var(--blue-light);
+    }
+
+    .extra-item input[type="checkbox"] { display: none; }
+
+    .extra-check {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.18s;
+      background: white;
+    }
+
+    .extra-item.active .extra-check {
+      border-color: var(--blue-bright);
+      background: var(--blue-bright);
+    }
+
+    .extra-item.active .extra-check::after {
+      content: '';
+      width: 8px;
+      height: 5px;
+      border-left: 2px solid white;
+      border-bottom: 2px solid white;
+      transform: rotate(-45deg) translateY(-1px);
+      display: block;
+    }
+
+    .extra-content { flex: 1; min-width: 0; }
+    .extra-name { font-size: 0.82rem; font-weight: 600; line-height: 1.3; }
+    .extra-price { font-size: 0.75rem; color: var(--accent); font-weight: 600; margin-top: 1px; }
+
+    /* ===== STICKY SIDEBAR ===== */
+    .sidebar { position: sticky; top: 1.5rem; }
+
+    /* ===== SUMMARY CARD ===== */
+    .summary-total {
+      background: linear-gradient(135deg, var(--blue-deep), var(--blue-mid));
+      color: white;
+      padding: 1.5rem;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .summary-total .label { font-size: 0.78rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+
+    .total-value {
+      font-family: 'Verdana', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .total-value .currency { font-size: 1.2rem; opacity: 0.8; vertical-align: top; margin-top: 4px; display: inline-block; }
+
+    .total-meta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .meta-pill {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.77rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .meta-pill i { font-size: 0.7rem; }
+
+    .summary-items { padding: 1.25rem 1.5rem; border-bottom: 1.5px solid var(--border); }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      font-size: 0.88rem;
+      border-bottom: 1px dashed #f0f0f0;
+    }
+
+    .summary-row:last-child { border-bottom: none; }
+    .summary-row .item-name { color: var(--text-muted); }
+    .summary-row .item-val { font-weight: 600; color: var(--text-dark); }
+    .summary-row .item-val.accent { color: var(--accent); }
+
+    /* ===== TIMELINE ===== */
+    .timeline-section { padding: 1.25rem 1.5rem; }
+
+    .timeline-title {
+      font-family: 'Verdana', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-dark);
+    }
+
+    .timeline-title i { color: var(--blue-bright); }
+
+    .timeline {
+      position: relative;
+      padding-left: 1.75rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: var(--border);
+      border-radius: 2px;
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .tl-item:last-child { margin-bottom: 0; }
+
+    .tl-dot {
+      position: absolute;
+      left: -1.75rem;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--blue-bright);
+      border: 3px solid white;
+      box-shadow: 0 0 0 2px var(--blue-bright);
+    }
+
+    .tl-dot.done { background: var(--green); box-shadow: 0 0 0 2px var(--green); }
+    .tl-dot.accent { background: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+
+    .tl-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text-dark);
+    }
+
+    .tl-days {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .tl-bar-wrap {
+      margin-top: 5px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .tl-bar {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--blue-bright), #60a5fa);
+      transition: width 0.4s ease;
+    }
+
+    /* ===== CTA ===== */
+    .cta-section { padding: 1.25rem 1.5rem; border-top: 1.5px solid var(--border); }
+
+    .btn-wa {
+      width: 100%;
+      background: #25D366;
+      color: white;
+      font-family: 'Verdana', sans-serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 13px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-wa:hover { background: #1ebe5b; transform: translateY(-1px); }
+
+    .btn-wa i { font-size: 1.1rem; }
+
+    .cta-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* ===== FEATURE PREVIEW ===== */
+    .preview-section { margin-top: 1.5rem; }
+
+    .preview-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-light);
+      color: var(--accent);
+      border: 1px solid #fed7aa;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 0.75rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+
+    .feature-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.82rem;
+    }
+
+    .feature-item .fi-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: var(--blue-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--blue-bright);
+      font-size: 0.8rem;
+      margin-bottom: 6px;
+    }
+
+    .feature-item .fi-name { font-weight: 600; line-height: 1.3; }
+    .feature-item .fi-desc { color: var(--text-muted); font-size: 0.75rem; margin-top: 2px; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 800px) {
+      .app {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+      .sidebar { position: static; }
+      .type-grid { grid-template-columns: 1fr 1fr; }
+      .extras-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .type-grid { grid-template-columns: 1fr; }
+      .total-value { font-size: 1.8rem; }
+    }
+
+    /* ===== ANIMATIONS ===== */
+    .fade-in { animation: fadeIn 0.3s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .counter-anim { transition: all 0.3s ease; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="#" class="logo">
+      <i class="fas fa-code"></i>
+      <span>Pontopixel</span>
+    </a>
+    <div class="header-tag"><i class="fas fa-calculator" style="margin-right:5px"></i>Simulador de Orçamento</div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero-bar">
+    <h1>Simule seu <em>orçamento</em> agora</h1>
+    <p>Escolha o tipo de site, selecione os recursos e veja o preço e prazo em tempo real.</p>
+  </div>
+
+  <!-- APP -->
+  <div class="app">
+
+    <!-- LEFT COLUMN: CONFIGURAÇÃO -->
+    <div>
+
+      <!-- TIPO DE SITE -->
+      <div class="card" style="margin-bottom:1.25rem;">
+        <div class="card-header">
+          <i class="fas fa-globe"></i>
+          <h2>Tipo de Site</h2>
+        </div>
+        <div class="card-body">
+          <div class="type-grid" id="typeGrid">
+            <!-- dinâmico via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- PÁGINAS + DESIGN -->
+      <div class="card" style="margin-bottom:1.25rem;">
+        <div class="card-header">
+          <i class="fas fa-sliders-h"></i>
+          <h2>Configurações Gerais</h2>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label>Páginas extras <span style="font-weight:400;text-transform:none;letter-spacing:0">(além das incluídas)</span></label>
+            <input type="number" id="paginasInput" min="0" max="30" value="0" />
+          </div>
+          <div class="field">
+            <label>Nível de design</label>
+            <select id="designLevel">
+              <option value="basico">Básico – template ajustado</option>
+              <option value="personalizado" selected>Personalizado – identidade visual</option>
+              <option value="premium">Premium – UI/UX customizada</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Prazo desejado</label>
+            <select id="prazoSelect">
+              <option value="normal" selected>Normal (prazo padrão)</option>
+              <option value="urgente">Urgente (+40%)</option>
+              <option value="flexivel">Flexível (-5%)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXTRAS DINÂMICOS -->
+      <div class="card" id="extrasCard">
+        <div class="card-header">
+          <i class="fas fa-puzzle-piece"></i>
+          <h2 id="extrasTitle">Recursos Adicionais</h2>
+        </div>
+        <div class="card-body">
+          <div class="extras-grid" id="extrasGrid">
+            <!-- dinâmico via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- PREVIEW DO QUE ESTÁ INCLUSO -->
+      <div class="card preview-section" style="margin-top:1.25rem;">
+        <div class="card-header">
+          <i class="fas fa-gift"></i>
+          <h2>O que já está incluso</h2>
+        </div>
+        <div class="card-body">
+          <div class="preview-badge"><i class="fas fa-check"></i> Sempre incluído</div>
+          <div class="features-grid" id="includedFeatures">
+            <!-- dinâmico via JS -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: SIDEBAR RESULTADO -->
+    <div class="sidebar">
+      <div class="card">
+
+        <!-- TOTAL -->
+        <div class="summary-total">
+          <div class="label">Estimativa total</div>
+          <div class="total-value">
+            <span class="currency">R$&nbsp;</span><span id="totalVal">0</span>
+          </div>
+          <div class="total-meta">
+            <div class="meta-pill"><i class="fas fa-clock"></i> <span id="prazoVal">–</span></div>
+            <div class="meta-pill"><i class="fas fa-layer-group"></i> <span id="pagesVal">–</span></div>
+          </div>
+        </div>
+
+        <!-- BREAKDOWN -->
+        <div class="summary-items" id="summaryItems">
+          <!-- dinâmico via JS -->
+        </div>
+
+        <!-- TIMELINE -->
+        <div class="timeline-section">
+          <div class="timeline-title"><i class="fas fa-stream"></i> Linha do Tempo</div>
+          <div class="timeline" id="timelineEl">
+            <!-- dinâmico via JS -->
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-section">
+          <button class="btn-wa" id="ctaBtn">
+            <i class="fab fa-whatsapp"></i> Solicitar orçamento
+          </button>
+          <p class="cta-note">Resposta em até 1h útil · Sem compromisso</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /app -->
+
+  <script>
+  // ============================================================
+  // CATÁLOGO DE TIPOS DE SITE
+  // ============================================================
+  const catalog = {
+    institucional: {
+      name: 'Institucional',
+      icon: 'fas fa-building',
+      preco: 1600,
+      prazo: 45,       // dias úteis
+      paginas: 4,      // incluso
+      descricao: 'Presença profissional da sua empresa',
+      included: [
+        { icon: 'fas fa-home',        name: 'Home',             desc: 'Página principal completa' },
+        { icon: 'fas fa-info-circle', name: 'Sobre',            desc: 'História e valores' },
+        { icon: 'fas fa-briefcase',   name: 'Serviços',         desc: 'Vitrine de serviços' },
+        { icon: 'fas fa-envelope',    name: 'Contato',          desc: 'Formulário + mapa' },
+        { icon: 'fas fa-mobile-alt',  name: 'Responsivo',       desc: 'Funciona em qualquer tela' },
+        { icon: 'fas fa-shield-alt',  name: 'SSL incluso',      desc: 'Site seguro (HTTPS)' },
+      ],
+      extras: [
+        { id: 'seo',       name: 'SEO Básico',          desc: 'Meta tags, sitemap, robots.txt', preco: 300,  dias: 1 },
+        { id: 'whatsapp',  name: 'Botão WhatsApp',      desc: 'Flutuante com mensagem pré-definida', preco: 80,   dias: 0 },
+        { id: 'blog',      name: 'Blog',                desc: 'Seção de artigos e notícias', preco: 400,  dias: 3 },
+        { id: 'galeria',   name: 'Galeria de Fotos',    desc: 'Portfólio visual com lightbox', preco: 200,  dias: 1 },
+        { id: 'mapa',      name: 'Google Maps',         desc: 'Mapa interativo integrado', preco: 80,   dias: 0 },
+        { id: 'admin',     name: 'Área Administrativa', desc: 'Editar conteúdo sem programar', preco: 600,  dias: 4 },
+        { id: 'analytics', name: 'Google Analytics',   desc: 'Relatórios de visitas e comportamento', preco: 150,  dias: 1 },
+        { id: 'cookie',    name: 'Banner de Cookies',  desc: 'Conformidade com LGPD', preco: 120,  dias: 0 },
+      ]
+    },
+
+    landing: {
+      name: 'Landing Page',
+      icon: 'fas fa-bullseye',
+      preco: 1000,
+      prazo: 27,
+      paginas: 1,
+      descricao: 'Página única de alta conversão',
+      included: [
+        { icon: 'fas fa-rocket',      name: 'Hero section',     desc: 'Destaque e chamada principal' },
+        { icon: 'fas fa-list-check',  name: 'Benefícios',       desc: 'Seção de diferenciais' },
+        { icon: 'fas fa-star',        name: 'Depoimentos',      desc: 'Prova social' },
+        { icon: 'fas fa-envelope',    name: 'Formulário CTA',   desc: 'Captura de leads' },
+        { icon: 'fas fa-mobile-alt',  name: 'Responsivo',       desc: 'Funciona em qualquer tela' },
+        { icon: 'fas fa-bolt',        name: 'Carregamento rápido', desc: 'Otimizado para conversão' },
+      ],
+      extras: [
+        { id: 'seo',        name: 'SEO Básico',          desc: 'Meta tags e otimização on-page', preco: 200,  dias: 1 },
+        { id: 'whatsapp',   name: 'Botão WhatsApp',      desc: 'Flutuante com mensagem pré-definida', preco: 80,   dias: 0 },
+        { id: 'video',      name: 'Vídeo de fundo',      desc: 'Hero animado com vídeo', preco: 250,  dias: 1 },
+        { id: 'countdown',  name: 'Timer / Countdown',   desc: 'Contagem regressiva para urgência', preco: 150,  dias: 0 },
+        { id: 'ab',         name: 'Pixel Meta/Google',   desc: 'Rastreamento de conversões para anúncios', preco: 200,  dias: 1 },
+        { id: 'popup',      name: 'Pop-up de saída',     desc: 'Captura antes de fechar a aba', preco: 180,  dias: 1 },
+        { id: 'mapa',       name: 'Google Maps',         desc: 'Mapa interativo integrado', preco: 80,   dias: 0 },
+        { id: 'analytics',  name: 'Google Analytics',   desc: 'Relatórios de visitas', preco: 100,  dias: 0 },
+      ]
+    },
+
+    ecommerce: {
+      name: 'Loja Virtual',
+      icon: 'fas fa-store',
+      preco: 3500,
+      prazo: 95,
+      paginas: 6,
+      descricao: 'Loja online completa e pronta para vender',
+      included: [
+        { icon: 'fas fa-home',            name: 'Home + Vitrine',   desc: 'Destaque de produtos' },
+        { icon: 'fas fa-tags',            name: 'Catálogo',         desc: 'Listagem com filtros' },
+        { icon: 'fas fa-box-open',        name: 'Página de produto',desc: 'Detalhes, fotos e botão' },
+        { icon: 'fas fa-shopping-cart',   name: 'Carrinho',         desc: 'Carrinho e checkout' },
+        { icon: 'fas fa-credit-card',     name: 'Pagamentos',       desc: 'Cartão, PIX, boleto' },
+        { icon: 'fas fa-user',            name: 'Área do cliente',  desc: 'Login, pedidos, perfil' },
+      ],
+      extras: [
+        { id: 'seo',        name: 'SEO para produtos',   desc: 'Schema de produto, rich snippets', preco: 500,  dias: 3 },
+        { id: 'mkt',        name: 'Email marketing',     desc: 'Abandono de carrinho, campanhas', preco: 400,  dias: 3 },
+        { id: 'cupom',      name: 'Cupons de desconto',  desc: 'Sistema de promoções e cupons', preco: 200,  dias: 1 },
+        { id: 'frete',      name: 'Cálculo de frete',    desc: 'Integração Correios/transportadoras', preco: 350,  dias: 2 },
+        { id: 'estoque',    name: 'Controle de estoque', desc: 'Alertas, variações, relatórios', preco: 300,  dias: 2 },
+        { id: 'reviews',    name: 'Avaliações',          desc: 'Sistema de reviews de produtos', preco: 200,  dias: 1 },
+        { id: 'whatsapp',   name: 'Chat WhatsApp',       desc: 'Atendimento direto na loja', preco: 120,  dias: 0 },
+        { id: 'analytics',  name: 'Google Analytics 4',  desc: 'E-commerce tracking completo', preco: 250,  dias: 1 },
+      ]
+    },
+
+    casamento: {
+      name: 'Site de Casamento',
+      icon: 'fas fa-heart',
+      preco: 1400,
+      prazo: 36,
+      paginas: 3,
+      descricao: 'Site romântico para o grande dia',
+      included: [
+        { icon: 'fas fa-heart',         name: 'Página principal',   desc: 'Contagem regressiva e casal' },
+        { icon: 'fas fa-map-marker-alt',name: 'Cerimônia/Festa',    desc: 'Local, data e horário' },
+        { icon: 'fas fa-images',        name: 'Galeria de fotos',   desc: 'Álbum do casal' },
+        { icon: 'fas fa-envelope',      name: 'Confirmação de presença', desc: 'RSVP online' },
+        { icon: 'fas fa-music',         name: 'Playlist',           desc: 'Sugestão de músicas' },
+        { icon: 'fas fa-mobile-alt',    name: 'Responsivo',         desc: 'Perfeito no celular' },
+      ],
+      extras: [
+        { id: 'mesa',       name: 'Lista de presentes',  desc: 'Mesa de presentes virtual integrada', preco: 300,  dias: 2 },
+        { id: 'hospedagem', name: 'Info de hospedagem',  desc: 'Hotéis parceiros, dicas de translado', preco: 150,  dias: 1 },
+        { id: 'cerimonia',  name: 'Cerimônia ao vivo',   desc: 'Link para transmissão online', preco: 200,  dias: 1 },
+        { id: 'historia',   name: 'Nossa história',      desc: 'Linha do tempo do relacionamento', preco: 250,  dias: 2 },
+        { id: 'mapa',       name: 'Mapa interativo',     desc: 'Local da cerimônia e festa no mapa', preco: 100,  dias: 0 },
+        { id: 'cronograma', name: 'Cronograma do dia',   desc: 'Timeline detalhada do evento', preco: 180,  dias: 1 },
+        { id: 'mesa_assentos', name: 'Mapa de assentos', desc: 'Consulta de mesa online pelos convidados', preco: 350,  dias: 3 },
+        { id: 'codigo',     name: 'Código de vestimenta', desc: 'Guia de trajes e dress code', preco: 80,   dias: 0 },
+      ]
+    },
+
+    portfolio: {
+      name: 'Portfólio',
+      icon: 'fas fa-paint-brush',
+      preco: 1300,
+      prazo: 32,
+      paginas: 3,
+      descricao: 'Mostre seu trabalho com elegância',
+      included: [
+        { icon: 'fas fa-user-circle',   name: 'Apresentação',     desc: 'Sobre você e habilidades' },
+        { icon: 'fas fa-th',            name: 'Galeria/Projetos', desc: 'Vitrine de trabalhos' },
+        { icon: 'fas fa-envelope',      name: 'Contato',          desc: 'Formulário e redes sociais' },
+        { icon: 'fas fa-mobile-alt',    name: 'Responsivo',       desc: 'Perfeito no celular' },
+        { icon: 'fas fa-bolt',          name: 'Performance',      desc: 'Carregamento rápido' },
+        { icon: 'fas fa-shield-alt',    name: 'SSL incluso',      desc: 'Site seguro (HTTPS)' },
+      ],
+      extras: [
+        { id: 'seo',        name: 'SEO Básico',           desc: 'Meta tags, Google Search Console', preco: 200,  dias: 1 },
+        { id: 'blog',       name: 'Blog / artigos',       desc: 'Seção de conteúdo e ideias', preco: 350,  dias: 2 },
+        { id: 'download',   name: 'CV para download',     desc: 'Currículo em PDF disponível', preco: 80,   dias: 0 },
+        { id: 'depoimentos',name: 'Depoimentos',          desc: 'Testemunhos de clientes', preco: 120,  dias: 0 },
+        { id: 'whatsapp',   name: 'Botão WhatsApp',       desc: 'Contato rápido flutuante', preco: 80,   dias: 0 },
+        { id: 'analytics',  name: 'Analytics',            desc: 'Rastreamento de visitantes', preco: 100,  dias: 0 },
+        { id: 'darkmode',   name: 'Dark mode',            desc: 'Alternância de tema claro/escuro', preco: 200,  dias: 1 },
+        { id: 'multi',      name: 'Multilingue (EN/PT)',  desc: 'Site em português e inglês', preco: 400,  dias: 3 },
+      ]
+    },
+
+    clinica: {
+      name: 'Clínica/Saúde',
+      icon: 'fas fa-stethoscope',
+      preco: 2000,
+      prazo: 63,
+      paginas: 5,
+      descricao: 'Profissional para área da saúde',
+      included: [
+        { icon: 'fas fa-home',          name: 'Home',             desc: 'Página principal' },
+        { icon: 'fas fa-user-md',       name: 'Equipe',           desc: 'Perfil dos profissionais' },
+        { icon: 'fas fa-heartbeat',     name: 'Especialidades',   desc: 'Serviços e tratamentos' },
+        { icon: 'fas fa-map-marker',    name: 'Localização',      desc: 'Endereço e mapa' },
+        { icon: 'fas fa-phone',         name: 'Contato',          desc: 'Formulário e telefone' },
+        { icon: 'fas fa-shield-alt',    name: 'SSL incluso',      desc: 'Site seguro (HTTPS)' },
+      ],
+      extras: [
+        { id: 'agenda',     name: 'Agendamento online',  desc: 'Formulário de marcação de consulta', preco: 500,  dias: 3 },
+        { id: 'seo',        name: 'SEO Local',           desc: 'Otimizado para buscas locais', preco: 400,  dias: 2 },
+        { id: 'whatsapp',   name: 'Botão WhatsApp',      desc: 'Contato rápido flutuante', preco: 80,   dias: 0 },
+        { id: 'blog',       name: 'Blog de saúde',       desc: 'Artigos e dicas de bem-estar', preco: 400,  dias: 3 },
+        { id: 'planos',     name: 'Convênios aceitos',   desc: 'Lista de planos de saúde', preco: 150,  dias: 1 },
+        { id: 'depoimentos',name: 'Depoimentos',         desc: 'Avaliações de pacientes', preco: 150,  dias: 0 },
+        { id: 'analytics',  name: 'Analytics + Pixel',  desc: 'Rastreamento para anúncios', preco: 250,  dias: 1 },
+        { id: 'lgpd',       name: 'LGPD completo',       desc: 'Política de privacidade, cookies, termos', preco: 200,  dias: 1 },
+      ]
+    },
+  };
+
+  // ============================================================
+  // ESTADO
+  // ============================================================
+  let state = {
+    tipo: 'institucional',
+    paginas: 0,
+    design: 'personalizado',
+    prazo: 'normal',
+    extras: new Set()
+  };
+
+  // ============================================================
+  // RENDER TIPO GRID
+  // ============================================================
+  function renderTypeGrid() {
+    const grid = document.getElementById('typeGrid');
+    grid.innerHTML = '';
+    Object.entries(catalog).forEach(([key, cat]) => {
+      const div = document.createElement('div');
+      div.className = 'type-card' + (state.tipo === key ? ' active' : '');
+      div.dataset.tipo = key;
+      div.innerHTML = `
+        <i class="${cat.icon}"></i>
+        <div class="tc-name">${cat.name}</div>
+        <div class="tc-price">a partir de R$ ${cat.preco.toLocaleString('pt-BR')}</div>
+      `;
+      div.addEventListener('click', () => {
+        state.tipo = key;
+        state.extras.clear();
+        renderTypeGrid();
+        renderExtras();
+        renderIncluded();
+        calcular();
+      });
+      grid.appendChild(div);
+    });
+  }
+
+  // ============================================================
+  // RENDER EXTRAS
+  // ============================================================
+  function renderExtras() {
+    const cat = catalog[state.tipo];
+    const grid = document.getElementById('extrasGrid');
+    document.getElementById('extrasTitle').textContent = `Recursos – ${cat.name}`;
+    grid.innerHTML = '';
+    grid.classList.add('fade-in');
+
+    cat.extras.forEach(extra => {
+      const isActive = state.extras.has(extra.id);
+      const div = document.createElement('div');
+      div.className = 'extra-item' + (isActive ? ' active' : '');
+      div.innerHTML = `
+        <div class="extra-check"></div>
+        <div class="extra-content">
+          <div class="extra-name">${extra.name}</div>
+          <div class="extra-price">+R$ ${extra.preco.toLocaleString('pt-BR')}</div>
+          <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;">${extra.desc}</div>
+        </div>
+      `;
+      div.addEventListener('click', () => {
+        if (state.extras.has(extra.id)) state.extras.delete(extra.id);
+        else state.extras.add(extra.id);
+        div.classList.toggle('active');
+        calcular();
+      });
+      grid.appendChild(div);
+    });
+  }
+
+  // ============================================================
+  // RENDER INCLUDED
+  // ============================================================
+  function renderIncluded() {
+    const cat = catalog[state.tipo];
+    const grid = document.getElementById('includedFeatures');
+    grid.innerHTML = '';
+    grid.classList.add('fade-in');
+    cat.included.forEach(f => {
+      const div = document.createElement('div');
+      div.className = 'feature-item';
+      div.innerHTML = `
+        <div class="fi-icon"><i class="${f.icon}"></i></div>
+        <div class="fi-name">${f.name}</div>
+        <div class="fi-desc">${f.desc}</div>
+      `;
+      grid.appendChild(div);
+    });
+  }
+
+  // ============================================================
+  // CALCULAR + RENDER SIDEBAR
+  // ============================================================
+  function calcular() {
+    const cat = catalog[state.tipo];
+    const paginas = parseInt(document.getElementById('paginasInput').value) || 0;
+    const design = document.getElementById('designLevel').value;
+    const prazoMod = document.getElementById('prazoSelect').value;
+
+    const designMult = { basico: 0, personalizado: 0, premium: 400 };
+    const prazoMult  = { normal: 1, urgente: 1.4, flexivel: 0.95 };
+    const prazoTexto = { normal: '', urgente: ' (urgente)', flexivel: ' (flex)' };
+
+    // Preço base
+    let total = cat.preco;
+    let diasBase = cat.prazo;
+    let diasExtras = 0;
+
+    // Design
+    total += designMult[design];
+
+    // Páginas extras
+    total += paginas * 150;
+    diasBase += Math.ceil(paginas * 0.5);
+
+    // Extras selecionados
+    let extrasRows = [];
+    cat.extras.forEach(extra => {
+      if (state.extras.has(extra.id)) {
+        total += extra.preco;
+        diasExtras += extra.dias;
+        extrasRows.push({ name: extra.name, preco: extra.preco });
+      }
+    });
+
+    // Prazo
+    const totalDias = Math.ceil((diasBase + diasExtras) * (prazoMult[prazoMod]));
+    total = Math.round(total * prazoMult[prazoMod]);
+
+    const totalPages = cat.paginas + paginas;
+
+    // ---- ATUALIZA UI ----
+    // Animação no valor
+    const totalEl = document.getElementById('totalVal');
+    totalEl.textContent = total.toLocaleString('pt-BR');
+
+    document.getElementById('prazoVal').textContent = `${totalDias} dias úteis${prazoTexto[prazoMod]}`;
+    document.getElementById('pagesVal').textContent = `${totalPages} página${totalPages !== 1 ? 's' : ''}`;
+
+    // Breakdown
+    const summaryEl = document.getElementById('summaryItems');
+    let rows = [];
+    rows.push({ name: `${cat.name} (base)`, val: `R$ ${cat.preco.toLocaleString('pt-BR')}` });
+    if (designMult[design] > 0) rows.push({ name: 'Design premium', val: `+R$ ${designMult[design].toLocaleString('pt-BR')}` });
+    if (paginas > 0) rows.push({ name: `${paginas} pág. extra${paginas > 1 ? 's' : ''}`, val: `+R$ ${(paginas * 150).toLocaleString('pt-BR')}` });
+    extrasRows.forEach(r => rows.push({ name: r.name, val: `+R$ ${r.preco.toLocaleString('pt-BR')}` }));
+    if (prazoMod === 'urgente') rows.push({ name: 'Urgência (+40%)', val: '×1.4', accent: true });
+    if (prazoMod === 'flexivel') rows.push({ name: 'Desconto flexível (−5%)', val: '×0.95', accent: true });
+
+    summaryEl.innerHTML = rows.map(r => `
+      <div class="summary-row">
+        <span class="item-name">${r.name}</span>
+        <span class="item-val ${r.accent ? 'accent' : ''}">${r.val}</span>
+      </div>
+    `).join('');
+
+    // Timeline
+    renderTimeline(cat, diasBase, extrasRows, diasExtras, totalDias);
+
+    // CTA
+    buildCTA(cat, total, totalDias, extrasRows);
+  }
+
+  // ============================================================
+  // TIMELINE
+  // ============================================================
+  function renderTimeline(cat, diasBase, extrasRows, diasExtras, totalDias) {
+    const el = document.getElementById('timelineEl');
+
+    // Fases padrão por tipo
+    const fases = getTimeline(cat.name, diasBase, extrasRows, diasExtras, totalDias);
+    let accumulated = 0;
+
+    el.innerHTML = fases.map((fase, i) => {
+      accumulated += fase.dias;
+      const pct = Math.min(100, Math.round((fase.dias / totalDias) * 100));
+      const dotClass = i === 0 ? 'done' : i === fases.length - 1 ? 'accent' : '';
+      return `
+        <div class="tl-item">
+          <div class="tl-dot ${dotClass}"></div>
+          <div class="tl-name">${fase.nome}</div>
+          <div class="tl-days">${fase.dias} dia${fase.dias !== 1 ? 's' : ''} útil${fase.dias !== 1 ? 'eis' : ''}</div>
+          <div class="tl-bar-wrap"><div class="tl-bar" style="width:${pct}%"></div></div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function getTimeline(tipo, diasBase, extrasRows, diasExtras, totalDias) {
+    // Fases base por tipo
+    const baseFases = {
+      'Institucional':        [
+        { nome: '📋 Briefing & planejamento', dias: 1 },
+        { nome: '🎨 Design (wireframe + visual)', dias: Math.ceil(diasBase * 0.35) },
+        { nome: '💻 Desenvolvimento', dias: Math.ceil(diasBase * 0.4) },
+        { nome: '📝 Inserção de conteúdo', dias: Math.ceil(diasBase * 0.1) },
+        { nome: '✅ Revisão & testes', dias: Math.ceil(diasBase * 0.1) },
+      ],
+      'Landing Page':         [
+        { nome: '📋 Briefing & estratégia', dias: 1 },
+        { nome: '🎨 Design da página', dias: Math.ceil(diasBase * 0.4) },
+        { nome: '💻 Desenvolvimento', dias: Math.ceil(diasBase * 0.35) },
+        { nome: '⚡ Otimização de conversão', dias: Math.ceil(diasBase * 0.15) },
+        { nome: '✅ Revisão & publicação', dias: 1 },
+      ],
+      'Loja Virtual':         [
+        { nome: '📋 Briefing & planejamento', dias: 1 },
+        { nome: '🎨 Design da loja', dias: Math.ceil(diasBase * 0.2) },
+        { nome: '💻 Desenvolvimento base', dias: Math.ceil(diasBase * 0.3) },
+        { nome: '🛒 Catálogo & pagamentos', dias: Math.ceil(diasBase * 0.25) },
+        { nome: '🔧 Integrações & testes', dias: Math.ceil(diasBase * 0.15) },
+        { nome: '✅ Revisão & publicação', dias: 1 },
+      ],
+      'Site de Casamento':    [
+        { nome: '💑 Briefing do casal', dias: 1 },
+        { nome: '🎨 Design temático', dias: Math.ceil(diasBase * 0.4) },
+        { nome: '💻 Desenvolvimento', dias: Math.ceil(diasBase * 0.3) },
+        { nome: '📸 Inserção de fotos & dados', dias: Math.ceil(diasBase * 0.15) },
+        { nome: '✅ Revisão & envio ao casal', dias: 1 },
+      ],
+      'Portfólio':            [
+        { nome: '📋 Briefing & conteúdo', dias: 1 },
+        { nome: '🎨 Design visual', dias: Math.ceil(diasBase * 0.35) },
+        { nome: '💻 Desenvolvimento', dias: Math.ceil(diasBase * 0.4) },
+        { nome: '✅ Revisão & publicação', dias: Math.ceil(diasBase * 0.2) },
+      ],
+      'Clínica/Saúde':        [
+        { nome: '📋 Briefing & planejamento', dias: 1 },
+        { nome: '🎨 Design profissional', dias: Math.ceil(diasBase * 0.3) },
+        { nome: '💻 Desenvolvimento', dias: Math.ceil(diasBase * 0.35) },
+        { nome: '🩺 Conteúdo & especialidades', dias: Math.ceil(diasBase * 0.2) },
+        { nome: '✅ Revisão & publicação', dias: Math.ceil(diasBase * 0.1) },
+      ],
+    };
+
+    let fases = baseFases[tipo] || baseFases['Institucional'];
+
+    // Adiciona fase de extras se houver
+    if (diasExtras > 0 && extrasRows.length > 0) {
+      const nomes = extrasRows.slice(0,2).map(e => e.name).join(', ');
+      fases = [...fases, { nome: `⚙️ Integrações (${nomes}${extrasRows.length > 2 ? '...' : ''})`, dias: diasExtras }];
+    }
+
+    return fases;
+  }
+
+  // ============================================================
+  // CTA WHATSAPP
+  // ============================================================
+  function buildCTA(cat, total, dias, extrasRows) {
+    const btn = document.getElementById('ctaBtn');
+    const extrasTexto = extrasRows.length > 0
+      ? `\nExtras: ${extrasRows.map(e => e.name).join(', ')}`
+      : '';
+    const msg = `Olá! Simulei um orçamento pelo site da Pontopixel:\n\n🌐 Tipo: *${cat.name}*${extrasTexto}\n💰 Estimativa: *R$ ${total.toLocaleString('pt-BR')}*\n⏱️ Prazo: *${dias} dias úteis*\n\nGostaria de mais informações!`;
+    btn.onclick = () => {
+      window.open(`https://wa.me/5519971122221?text=${encodeURIComponent(msg)}`, '_blank');
+    };
+  }
+
+  // ============================================================
+  // EVENT LISTENERS
+  // ============================================================
+  document.getElementById('paginasInput').addEventListener('input', calcular);
+  document.getElementById('designLevel').addEventListener('change', calcular);
+  document.getElementById('prazoSelect').addEventListener('change', calcular);
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  renderTypeGrid();
+  renderExtras();
+  renderIncluded();
+  calcular();
+  </script>
+
+</body>
+</html>
